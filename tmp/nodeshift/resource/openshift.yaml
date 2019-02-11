@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1
+    kind: DeploymentConfig
+    metadata:
+      name: simple-node-webapp
+      namespace: myproject
+      labels:
+        project: simple-node-webapp
+        version: 0.0.0
+        provider: nodeshift
+        app: simple-node-webapp
+    spec:
+      replicas: 1
+      revisionHistoryLimit: 2
+      selector:
+        app: simple-node-webapp
+        project: simple-node-webapp
+        provider: nodeshift
+      triggers:
+        - type: ConfigChange
+        - type: ImageChange
+          imageChangeParams:
+            automatic: true
+            containerNames:
+              - simple-node-webapp
+            from:
+              kind: ImageStreamTag
+              namespace: myproject
+              name: 'simple-node-webapp:latest'
+      template:
+        metadata:
+          labels:
+            project: simple-node-webapp
+            version: 0.0.0
+            provider: nodeshift
+            app: simple-node-webapp
+        spec:
+          containers:
+            - image: simple-node-webapp
+              name: simple-node-webapp
+              securityContext:
+                privileged: false
+              ports:
+                - containerPort: 8080
+                  name: http
+                  protocol: TCP
+              env: []
+  - apiVersion: v1
+    kind: Service
+    spec:
+      selector:
+        project: simple-node-webapp
+        provider: nodeshift
+      ports:
+        - protocol: TCP
+          port: 8080
+          targetPort: 8080
+          name: http
+      type: ClusterIP
+    metadata:
+      name: simple-node-webapp
+      namespace: myproject
+      labels:
+        project: simple-node-webapp
+        version: 0.0.0
+        provider: nodeshift
+  - apiVersion: v1
+    kind: Route
+    spec:
+      to:
+        kind: Service
+        name: simple-node-webapp
+      port:
+        targetPort: 8080
+    metadata:
+      name: simple-node-webapp
+      labels:
+        project: simple-node-webapp
+        version: 0.0.0
+        provider: nodeshift
