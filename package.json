@@ -15,7 +15,7 @@
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
     "nodeshift": "^2.1.1",
-    "snyk": "^1.189.0"
+    "snyk": "^1.192.0"
   },
   "snyk": true
 }
