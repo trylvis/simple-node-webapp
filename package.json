@@ -14,8 +14,8 @@
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
-    "nodeshift": "^2.1.1",
-    "snyk": "^1.230.5"
+    "nodeshift": "^3.0.0",
+    "snyk": "^1.465.0"
   },
   "snyk": true
 }
